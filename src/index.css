@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0ea5e9; /* Cyan-500 */
+  --color-secondary: #8b5cf6; /* Violet-500 */
+  --color-dark-bg: #000000; /* Pure Black */
+  --color-dark-card: #0a0a0a; /* Very Dark Gray */
+  --color-light-bg: #f8fafc; /* Slate-50 */
+  --color-light-card: #ffffff;
+}
+
+/* Custom dark mode utilities for gradient text */
+@utility text-gradient {
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility glass-card {
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@utility glass-card-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Utility for the Spotlight Effect Hover */
+@layer utilities {
+  .spotlight-card {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .spotlight-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: radial-gradient(
+      800px circle at var(--mouse-x) var(--mouse-y),
+      rgba(255, 255, 255, 0.06),
+      transparent 40%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+
+  .spotlight-border {
+    position: relative;
+    border-radius: inherit;
+  }
+
+  .spotlight-border::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: radial-gradient(
+      400px circle at var(--mouse-x) var(--mouse-y),
+      rgba(14, 165, 233, 0.3), /* Cyan primary color */
+      transparent 40%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .spotlight-card:hover .spotlight-border::after {
+    opacity: 1;
+  }
+
+  /* Make sure content is above the spotlight border */
+  .spotlight-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    border-radius: inherit;
+    background: inherit;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-black text-slate-50; /* Pure black */
+  }
+}
